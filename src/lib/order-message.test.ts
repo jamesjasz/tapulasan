@@ -7,6 +7,7 @@ const order: Order = {
   ref: "TU-261009-AB2C",
   format: "table-stand",
   quantity: 3,
+  unitPrice: 50000,
   finish: "wood",
   color: "#D6B58A",
   name: "Kopi & Roti “Senja”",
@@ -34,6 +35,8 @@ test("Indonesian message has every field, in order", () => {
     "No. pesanan: TU-261009-AB2C",
     "Bentuk: Stand Meja",
     "Jumlah: 3",
+    "Harga: Rp 50.000 / pcs",
+    "Subtotal: Rp 150.000 (belum termasuk ongkir)",
     "Finishing: Kayu bambu",
     "Warna: #D6B58A (Bambu)",
     "Logo: ada, file saya kirim di chat ini",
@@ -50,6 +53,8 @@ test("English message uses English labels", () => {
   assert.ok(msg.includes("Shape: Table Stand"));
   assert.ok(msg.includes("Finish: Bamboo wood"));
   assert.ok(msg.includes("Payment: Bank transfer"));
+  assert.ok(msg.includes("Price: Rp 50.000 / pc"));
+  assert.ok(msg.includes("Subtotal: Rp 150.000 (shipping not included)"));
   assert.ok(!msg.includes("Bentuk"));
 });
 
@@ -63,6 +68,7 @@ test("empty optional fields are left out; link help replaces the link", () => {
   assert.ok(!msg.includes("Pembayaran:"));
   assert.ok(msg.includes("Link ulasan Google: belum ada, mohon dibantu"));
   assert.ok(msg.includes("Logo: tidak pakai logo"));
+  assert.ok(!buildOrderMessage({ ...order, unitPrice: null }, "id").includes("Subtotal"), "no price → no price lines");
   assert.ok(!/\n{3,}/.test(msg), "no triple blank lines");
 });
 

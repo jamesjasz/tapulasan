@@ -6,6 +6,7 @@ import { AlertTriangle, ArrowRight, Check, Clock, ImagePlus, Link2, Trash2 } fro
 import { finishes, formatBySlug, formats, orderableFormats, swatches, type FormatSlug } from "@/content/products";
 import { configFromParams, configToParams, defaultConfig, LIMITS, type BadgeConfig } from "@/lib/badge-config";
 import { fill, getDict, localePath, type Lang } from "@/lib/i18n";
+import { formatIDR } from "@/lib/price";
 import { checkReviewLink } from "@/lib/review-link";
 import { loadLogo, saveLogo } from "@/lib/session";
 import { BadgeStage } from "./badge/badge-stage";
@@ -321,7 +322,10 @@ export function Customizer({ lang, slug, header }: { lang: Lang; slug: FormatSlu
         <div className="mx-auto flex max-w-xl items-center gap-3">
           <div className="min-w-0 flex-1">
             <p className="truncate text-sm font-semibold">{format.name[lang]}</p>
-            <p className="truncate text-xs text-ink-soft">{alt ? d.common.comingSoon : d.common.priceSoon}</p>
+            <p className="truncate text-xs text-ink-soft">
+              {format.price === null ? d.common.priceSoon : `${formatIDR(format.price)} ${d.common.perPiece}`}
+              {alt && ` · ${d.common.comingSoon}`}
+            </p>
           </div>
           <OrderButton href={alt ? null : checkoutHref} label={t.continue} className="shrink-0" />
         </div>
