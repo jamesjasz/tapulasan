@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { AlertTriangle, ArrowLeft, ArrowRight, Check, ChevronDown, Mail, MessageCircle, Minus, Pencil, Plus } from "lucide-react";
 import { site } from "@/config/site";
-import { finishById, formatBySlug, formats, swatches, type FormatSlug } from "@/content/products";
+import { finishById, formatBySlug, formats, orderableFormats, swatches, type FormatSlug } from "@/content/products";
 import { configFromParams, configToParams, defaultConfig, type BadgeConfig } from "@/lib/badge-config";
 import { fill, getDict, localePath, type Lang } from "@/lib/i18n";
 import { mailLink, waLink } from "@/lib/links";
@@ -37,7 +37,7 @@ const initial = (lang: Lang): State => ({
   step: 0,
   reached: 0,
   ref: "",
-  config: defaultConfig(lang, "table-stand"),
+  config: defaultConfig(lang, orderableFormats[0].slug),
   quantity: 1,
   reviewLink: "",
   needsLinkHelp: false,
@@ -66,9 +66,11 @@ export function Checkout({ lang }: { lang: Lang }) {
     const params = new URLSearchParams(location.search);
     const base = saved ?? initial(lang);
     const fromUrl = params.has("format")
-      ? configFromParams(params, lang, (params.get("format") as FormatSlug) ?? "table-stand")
+      ? configFromParams(params, lang, (params.get("format") as FormatSlug) ?? orderableFormats[0].slug)
       : null;
-    const config = fromUrl ?? base.config;
+    const restored = fromUrl ?? base.config;
+    // Coming-soon formats can't be ordered: keep the design, switch to an orderable format.
+    const config = formatBySlug(restored.format)?.available ? restored : { ...restored, format: orderableFormats[0].slug };
     const hashStep = Number(location.hash.match(/^#step-(\d)$/)?.[1]) - 1;
     const step = hashStep >= 0 ? Math.min(hashStep, base.reached) : base.step;
     // Hydrate after the static HTML (step 1, defaults) has rendered.
@@ -132,6 +134,7 @@ export function Checkout({ lang }: { lang: Lang }) {
   function validate(step: number): Errors {
     const e: Errors = {};
     if (step === 0 && !(Number.isInteger(s.quantity) && s.quantity >= 1)) e.quantity = t.contact.required;
+    if (step === 0 && !formatBySlug(s.config.format)?.available) e.format = t.contact.required;
     if (step === 2 && !s.needsLinkHelp) {
       if (linkCheck === "empty") e.reviewLink = t.link.required;
       else if (linkCheck === "invalid") e.reviewLink = t.link.invalid;
@@ -235,17 +238,20 @@ export function Checkout({ lang }: { lang: Lang }) {
                   {formats.map((f) => (
                     <label
                       key={f.slug}
-                      className="flex min-h-14 cursor-pointer items-center justify-center rounded-control border-[1.5px] border-line bg-paper-raised px-3 py-2 text-center font-semibold transition-colors hover:border-ink has-[:checked]:border-ink has-[:checked]:bg-ink has-[:checked]:text-paper has-[:focus-visible]:outline-3 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-tap-deep"
+                      className="flex min-h-14 flex-col items-center justify-center rounded-control border-[1.5px] border-line bg-paper-raised px-3 py-2 text-center font-semibold transition-colors hover:border-ink has-[:checked]:border-ink has-[:checked]:bg-ink has-[:checked]:text-paper has-[:disabled]:border-dashed has-[:disabled]:bg-transparent has-[:disabled]:text-ink-soft has-[:disabled]:hover:border-line has-[:focus-visible]:outline-3 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-tap-deep"
                     >
                       <input
+                        id={f.slug === orderableFormats[0].slug ? "f-format" : undefined}
                         type="radio"
                         name="format"
                         value={f.slug}
                         className="sr-only"
+                        disabled={!f.available}
                         checked={s.config.format === f.slug}
                         onChange={() => set("config", { ...s.config, format: f.slug })}
                       />
                       {f.name[lang]}
+                      {!f.available && <span className="font-mono text-[0.6875rem] font-normal uppercase tracking-wider">{d.common.comingSoon}</span>}
                     </label>
                   ))}
                 </div>
