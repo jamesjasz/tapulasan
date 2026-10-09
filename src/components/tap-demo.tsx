@@ -4,11 +4,15 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { RotateCcw, Star } from "lucide-react";
 import { getDict, type Lang } from "@/lib/i18n";
 import { useReducedMotion } from "@/lib/use-reduced-motion";
+import { formatBySlug } from "@/content/products";
 import { BadgeFace } from "./badge/face-canvas";
 
 // Stage geometry (percent of the square stage). The NFC point is where the face's coil sits.
-const BADGE = { left: 7, top: 20, width: 44 }; // table stand, 100×150 mm → height = 66
-const NFC = { x: BADGE.left + BADGE.width / 2, y: BADGE.top + BADGE.width * 1.5 * 0.885 };
+// The hero shows the format we sell now (Plakat Kasir, 148×105 mm landscape).
+const PLATE = formatBySlug("counter-plate")!;
+const BADGE = { left: 5, top: 42, width: 56 };
+const BADGE_H = (BADGE.width * PLATE.size.h) / PLATE.size.w;
+const NFC = { x: BADGE.left + BADGE.width * PLATE.nfc.x, y: BADGE.top + BADGE_H * PLATE.nfc.y };
 
 type Frame = { phase: "rest" | "approach" | "tap" | "open"; stars: number; chars: number };
 const REST: Frame = { phase: "rest", stars: 0, chars: 0 };
@@ -16,9 +20,9 @@ const REST: Frame = { phase: "rest", stars: 0, chars: 0 };
 // Phone pose per phase. Moved with a CSS transition whose easing overshoots slightly, like a spring.
 const POSE: Record<Frame["phase"], string> = {
   rest: "translate(0%, 0%) rotate(7deg)",
-  approach: "translate(-108%, 6%) rotate(-9deg)",
-  tap: "translate(-108%, 6%) rotate(-9deg)",
-  open: "translate(-30%, -3%) rotate(-2deg)",
+  approach: "translate(-181%, 12%) rotate(-12deg)",
+  tap: "translate(-181%, 12%) rotate(-12deg)",
+  open: "translate(-58%, -2%) rotate(-3deg)",
 };
 
 /** Plays when at least 40% of the element is on screen. */
@@ -79,7 +83,7 @@ export function TapDemo({ lang }: { lang: Lang }) {
         <Burst on={frame.phase === "tap" || frame.phase === "open"} key={`burst-${run}`} />
         <div
           className="absolute transition-transform duration-700 ease-[cubic-bezier(.34,1.4,.5,1)]"
-          style={{ left: "57%", top: "9%", width: "35%", transform: POSE[frame.phase] }}
+          style={{ left: "64%", top: "6%", width: "31%", transform: POSE[frame.phase] }}
         >
           <Phone frame={frame} lang={lang} />
         </div>
@@ -106,7 +110,7 @@ function Badge({ lang }: { lang: Lang }) {
   return (
     <div className="absolute" style={{ left: `${BADGE.left}%`, top: `${BADGE.top}%`, width: `${BADGE.width}%` }}>
       <div style={{ filter: "drop-shadow(0 18px 18px #15120f45)" }}>
-        <BadgeFace slug="table-stand" lang={lang} longSide={720} className="rounded-[6%]" />
+        <BadgeFace slug="counter-plate" lang={lang} longSide={720} className="rounded-[5%]" />
       </div>
       <div className="mx-[-6%] -mt-[3%] h-[9%] min-h-3 rounded-[4px] bg-ink-raised" />
     </div>
@@ -213,9 +217,15 @@ function Storyboard({ lang }: { lang: Lang }) {
             <div className="stage relative flex aspect-[3/5] items-center justify-center overflow-hidden rounded-card p-[10%]">
               {i === 0 ? (
                 <div className="relative w-full">
-                  <BadgeFace slug="table-stand" lang={lang} longSide={480} className="rounded-[6%]" />
-                  <span aria-hidden="true" className="absolute left-1/2 top-[88%] size-[70%] -translate-x-1/2 -translate-y-1/2 rounded-full border-[3px] border-tap" />
-                  <span aria-hidden="true" className="absolute left-1/2 top-[88%] size-[40%] -translate-x-1/2 -translate-y-1/2 rounded-full border-[3px] border-tap/70" />
+                  <BadgeFace slug="counter-plate" lang={lang} longSide={480} className="rounded-[5%]" />
+                  {[45, 25].map((size, i) => (
+                    <span
+                      key={size}
+                      aria-hidden="true"
+                      className={`absolute aspect-square -translate-x-1/2 -translate-y-1/2 rounded-full border-[3px] ${i ? "border-tap/70" : "border-tap"}`}
+                      style={{ left: `${PLATE.nfc.x * 100}%`, top: `${PLATE.nfc.y * 100}%`, width: `${size}%` }}
+                    />
+                  ))}
                 </div>
               ) : (
                 <div className="w-full">
