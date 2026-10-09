@@ -1,0 +1,198 @@
+@import "tailwindcss";
+
+/* Tokens: see docs/DESIGN.md. Primitive values live here; components use the semantic names. */
+@theme {
+  --color-paper: #f6f1e7;
+  --color-paper-raised: #fcfaf5;
+  --color-paper-sunk: #ece4d5;
+  --color-line: #d9cebb;
+  --color-ink: #15120f;
+  --color-ink-soft: #5e554b;
+  --color-ink-on-dark: #a89e91;
+  --color-ink-raised: #26211c;
+  --color-tap: #ff5a1f;
+  --color-tap-deep: #a93a0c;
+  --color-gold: #f5b301;
+  --color-leaf: #1f7a4d;
+  --color-danger: #b42318;
+
+  --font-display: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, monospace;
+
+  --text-display: clamp(2.75rem, 8vw, 6.5rem);
+  --text-display--line-height: 0.92;
+  --text-display--letter-spacing: -0.035em;
+  --text-h2: clamp(2rem, 4.5vw, 3.5rem);
+  --text-h2--line-height: 1;
+  --text-h2--letter-spacing: -0.03em;
+
+  --radius-control: 10px;
+  --radius-card: 20px;
+  --radius-stage: 32px;
+
+  --shadow-card: 0 1px 0 #15120f14, 0 12px 32px -12px #15120f40;
+  --shadow-object: 0 30px 60px -25px #15120f66;
+
+  --ease-out-soft: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-ripple: cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-ripple: ripple 2.4s var(--ease-ripple) infinite backwards;
+
+  --animate-burst: burst 1.1s var(--ease-ripple) both;
+  --animate-pop: pop 300ms var(--ease-out-soft);
+
+  @keyframes burst {
+    0% { transform: scale(0.05); opacity: 0.95; }
+    100% { transform: scale(1); opacity: 0; }
+  }
+  @keyframes pop {
+    50% { transform: scale(1.3); }
+  }
+  @keyframes ripple {
+    0% { transform: scale(0.35); opacity: 0.9; }
+    100% { transform: scale(1.6); opacity: 0; }
+  }
+}
+
+@layer base {
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  overflow-x: clip;
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-tap-deep);
+  outline-offset: 3px;
+}
+.bg-ink :focus-visible {
+  outline-color: var(--color-tap);
+}
+
+button:not(:disabled),
+summary,
+label:has(> input:not(:disabled)) {
+  cursor: pointer;
+}
+
+/* Keep the footer clear of the fixed mobile order bar on product pages. */
+@media (width < 64rem) {
+  body:has(.order-bar) > footer {
+    padding-bottom: 5.5rem;
+  }
+}
+
+::selection {
+  background: var(--color-tap);
+  color: var(--color-ink);
+}
+}
+
+@layer components {
+/* Mono labels: the "label maker" voice. */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 48px;
+  padding: 0 1.4rem;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 1rem;
+  line-height: 1.1;
+  text-align: center;
+  cursor: pointer;
+  transition:
+    transform 150ms var(--ease-out-soft),
+    background-color 150ms var(--ease-out-soft),
+    box-shadow 150ms var(--ease-out-soft);
+}
+.btn:active { transform: scale(0.97); }
+.btn-primary {
+  background: var(--color-tap);
+  color: var(--color-ink);
+  box-shadow: inset 0 -3px 0 #15120f30;
+}
+.btn-primary:hover { box-shadow: inset 0 -3px 0 #15120f30, 0 0 0 6px #ff5a1f33; }
+.btn-secondary {
+  background: transparent;
+  color: currentColor;
+  box-shadow: inset 0 0 0 2px currentColor;
+}
+.btn-secondary:hover { background: #15120f0d; }
+.bg-ink .btn-secondary:hover { background: #f6f1e71a; }
+.btn[aria-disabled="true"], .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.link {
+  color: var(--color-tap-deep);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 2px;
+}
+
+/* Form fields */
+.field {
+  width: 100%;
+  min-height: 48px;
+  padding: 0.7rem 0.9rem;
+  border-radius: var(--radius-control);
+  background: var(--color-paper-raised);
+  border: 1.5px solid #8a7f72;
+  color: var(--color-ink);
+  font-size: 1rem; /* ≥16px: no iOS zoom */
+  transition: border-color 150ms var(--ease-out-soft), box-shadow 150ms var(--ease-out-soft);
+}
+.field:focus-visible {
+  outline: none;
+  border-color: var(--color-ink);
+  box-shadow: 0 0 0 3px #a93a0c55;
+}
+.field[aria-invalid="true"] { border-color: var(--color-danger); }
+.label { display: block; font-weight: 600; font-size: 0.9375rem; margin-bottom: 0.4rem; }
+.hint { font-size: 0.8125rem; color: var(--color-ink-soft); margin-top: 0.35rem; }
+.error { font-size: 0.875rem; color: var(--color-danger); font-weight: 600; margin-top: 0.35rem; }
+
+/* FAQ disclosure */
+details > summary { list-style: none; cursor: pointer; }
+details > summary::-webkit-details-marker { display: none; }
+details[open] .faq-icon { transform: rotate(45deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 150ms !important;
+  }
+  /* Still rings instead of a pulse. */
+  .animate-ripple { animation: none !important; opacity: 0.5; scale: var(--s, 1); }
+}
+
+@layer components {
+/* Product stage: a lit tabletop for the badge */
+.stage {
+  background:
+    radial-gradient(120% 70% at 50% 35%, #fffdf8 0%, transparent 60%),
+    linear-gradient(180deg, var(--color-paper-sunk) 0%, #e4d9c6 100%);
+}
+.viewer canvas {
+  touch-action: pan-y !important; /* horizontal drag rotates, vertical swipe scrolls the page */
+}
+}
