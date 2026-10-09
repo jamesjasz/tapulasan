@@ -44,6 +44,7 @@
   }
 }
 
+@layer base {
 html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
@@ -67,6 +68,7 @@ body {
 ::selection {
   background: var(--color-tap);
   color: var(--color-ink);
+}
 }
 
 @layer components {
