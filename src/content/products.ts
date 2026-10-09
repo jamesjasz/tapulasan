@@ -9,6 +9,8 @@ export type Format = {
   slug: FormatSlug;
   name: Bilingual;
   tagline: Bilingual;
+  /** Can be ordered now. false = "coming soon": still designable, but no checkout. */
+  available: boolean;
   price: number | null; // DECIDE: price in IDR; null shows "price coming soon"
   /** Face size in mm (DECIDE: placeholder dimensions). */
   size: { w: number; h: number; d: number };
@@ -36,6 +38,7 @@ const specsTodo = {
 export const formats: Format[] = [
   {
     slug: "counter-plate",
+    available: true,
     name: { id: "Plakat Kasir", en: "Counter Plate" },
     tagline: {
       id: "Berdiri di meja kasir, tepat saat pelanggan membayar.",
@@ -52,6 +55,7 @@ export const formats: Format[] = [
   },
   {
     slug: "table-stand",
+    available: false,
     name: { id: "Stand Meja", en: "Table Stand" },
     tagline: {
       id: "Di setiap meja, di samping menu dan tisu.",
@@ -68,6 +72,7 @@ export const formats: Format[] = [
   },
   {
     slug: "lanyard-card",
+    available: false,
     name: { id: "Kartu Lanyard", en: "Lanyard Card" },
     tagline: {
       id: "Dikalungkan staf. Ulasan ikut ke mana pun mereka melayani.",
@@ -85,6 +90,7 @@ export const formats: Format[] = [
   },
   {
     slug: "keychain",
+    available: false,
     name: { id: "Gantungan Kunci", en: "Keychain" },
     tagline: {
       id: "Kecil, ikut di kunci toko atau kunci motor kurir.",
@@ -104,6 +110,9 @@ export const formats: Format[] = [
 ];
 
 export const formatBySlug = (slug: string) => formats.find((f) => f.slug === slug);
+
+/** Formats that can be ordered now (checkout only offers these). */
+export const orderableFormats = formats.filter((f) => f.available);
 
 export type FinishId = "matte" | "glossy" | "wood" | "metal";
 

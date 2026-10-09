@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { useEffect, useId, useRef, useState } from "react";
-import { AlertTriangle, ArrowRight, Check, ImagePlus, Link2, Trash2 } from "lucide-react";
-import { finishes, formatBySlug, formats, swatches, type FormatSlug } from "@/content/products";
+import { AlertTriangle, ArrowRight, Check, Clock, ImagePlus, Link2, Trash2 } from "lucide-react";
+import { finishes, formatBySlug, formats, orderableFormats, swatches, type FormatSlug } from "@/content/products";
 import { configFromParams, configToParams, defaultConfig, LIMITS, type BadgeConfig } from "@/lib/badge-config";
 import { fill, getDict, localePath, type Lang } from "@/lib/i18n";
 import { checkReviewLink } from "@/lib/review-link";
@@ -48,6 +48,8 @@ export function Customizer({ lang, slug, header }: { lang: Lang; slug: FormatSlu
 
   const qs = query ? `?${query}` : "";
   const checkoutHref = `${localePath(lang, "/checkout/")}?${configToParams(config, true)}`;
+  // Coming-soon formats can be designed but not ordered; offer the same design on an orderable format.
+  const alt = format.available ? null : orderableFormats[0];
   const linkCheck = checkReviewLink(config.link);
 
   function onLogo(file: File | undefined) {
@@ -110,6 +112,7 @@ export function Customizer({ lang, slug, header }: { lang: Lang; slug: FormatSlu
                           style={{ width: f.size.w / 4.5, height: f.size.h / 4.5, maxWidth: 34, maxHeight: 34 }}
                         />
                         {f.name[lang]}
+                        {!f.available && <span className="font-mono text-[0.625rem] uppercase tracking-wider opacity-80">{d.common.comingSoon}</span>}
                       </Link>
                     </li>
                   );
@@ -286,10 +289,24 @@ export function Customizer({ lang, slug, header }: { lang: Lang; slug: FormatSlu
               </span>
             </label>
 
+            {alt && (
+              <div id="unavailable-note" className="flex gap-3 rounded-card bg-paper-sunk p-4">
+                <Clock aria-hidden="true" className="mt-0.5 size-5 shrink-0" />
+                <div>
+                  <p className="text-[0.9375rem]">{fill(t.unavailable, { name: alt.name[lang] })}</p>
+                  <Link
+                    href={`${localePath(lang, `/shop/${alt.slug}/`)}${qs}`}
+                    scroll={false}
+                    className="link mt-1 inline-flex min-h-11 items-center gap-1"
+                  >
+                    {fill(t.orderAs, { name: alt.name[lang] })} <ArrowRight aria-hidden="true" className="size-4" />
+                  </Link>
+                </div>
+              </div>
+            )}
+
             <div className="hidden flex-wrap items-center gap-3 lg:flex">
-              <Link href={checkoutHref} className="btn btn-primary">
-                {t.continue} <ArrowRight aria-hidden="true" className="size-5" />
-              </Link>
+              <OrderButton href={alt ? null : checkoutHref} label={t.continue} />
               <CopyButton copied={copied} onClick={copyLink} label={t.share} done={t.copied} />
             </div>
             <div className="lg:hidden">
@@ -304,16 +321,32 @@ export function Customizer({ lang, slug, header }: { lang: Lang; slug: FormatSlu
         <div className="mx-auto flex max-w-xl items-center gap-3">
           <div className="min-w-0 flex-1">
             <p className="truncate text-sm font-semibold">{format.name[lang]}</p>
-            <p className="truncate text-xs text-ink-soft">{d.common.priceSoon}</p>
+            <p className="truncate text-xs text-ink-soft">{alt ? d.common.comingSoon : d.common.priceSoon}</p>
           </div>
-          <Link href={checkoutHref} className="btn btn-primary shrink-0">
-            {t.continue} <ArrowRight aria-hidden="true" className="size-5" />
-          </Link>
+          <OrderButton href={alt ? null : checkoutHref} label={t.continue} className="shrink-0" />
         </div>
       </div>
 
       <ContextScene lang={lang} format={format} face={canvas} version={version} />
     </>
+  );
+}
+
+/** "Continue to order": a link when the format can be ordered, otherwise a disabled button. */
+function OrderButton({ href, label, className = "" }: { href: string | null; label: string; className?: string }) {
+  const content = (
+    <>
+      {label} <ArrowRight aria-hidden="true" className="size-5" />
+    </>
+  );
+  return href ? (
+    <Link href={href} className={`btn btn-primary ${className}`}>
+      {content}
+    </Link>
+  ) : (
+    <button type="button" disabled aria-describedby="unavailable-note" className={`btn btn-primary ${className}`}>
+      {content}
+    </button>
   );
 }
 

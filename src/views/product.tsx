@@ -32,7 +32,7 @@ export function ProductView({ lang, format: slug }: { lang: Lang; format: string
       </h1>
       <p className="mt-3 text-lg text-ink-soft">{f.tagline[lang]}</p>
       <p className="mt-4 inline-flex items-center gap-2 rounded-full bg-ink px-3 py-1.5 font-mono text-xs uppercase tracking-wider text-paper">
-        {f.price === null ? d.common.priceSoon : f.price}
+        {!f.available ? d.common.comingSoon : f.price === null ? d.common.priceSoon : f.price}
       </p>
     </div>
   );

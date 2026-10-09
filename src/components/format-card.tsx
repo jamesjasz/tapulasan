@@ -43,7 +43,11 @@ export function FormatCard({ format, lang, headingLevel = 3 }: { format: Format;
         </H>
         <p className="mt-1.5 text-[0.9375rem] text-ink-soft">{format.tagline[lang]}</p>
         <div className="mt-auto flex items-center justify-between gap-3 pt-4">
-          <span className="eyebrow text-ink-soft">{format.price === null ? d.common.priceShort : format.price}</span>
+          {format.available ? (
+            <span className="eyebrow text-ink-soft">{format.price === null ? d.common.priceShort : format.price}</span>
+          ) : (
+            <span className="eyebrow rounded-full border border-dashed border-ink-soft px-2.5 py-1 text-ink-soft">{d.common.comingSoon}</span>
+          )}
           <span aria-hidden="true" className="inline-flex items-center gap-1 text-sm font-bold text-tap-deep">
             {d.common.customize} <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
           </span>
