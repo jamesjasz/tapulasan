@@ -36,7 +36,7 @@ test("Indonesian message has every field, in order", () => {
     "Bentuk: Stand Meja",
     "Jumlah: 3",
     "Harga: Rp 50.000 / pcs",
-    "Subtotal: Rp 150.000 (belum termasuk ongkir)",
+    "Total: Rp 150.000 (gratis ongkir)",
     "Finishing: Kayu bambu",
     "Warna: #D6B58A (Bambu)",
     "Logo: ada, file saya kirim di chat ini",
@@ -54,7 +54,7 @@ test("English message uses English labels", () => {
   assert.ok(msg.includes("Finish: Bamboo wood"));
   assert.ok(msg.includes("Payment: Bank transfer"));
   assert.ok(msg.includes("Price: Rp 50.000 / pc"));
-  assert.ok(msg.includes("Subtotal: Rp 150.000 (shipping not included)"));
+  assert.ok(msg.includes("Total: Rp 150.000 (free shipping)"));
   assert.ok(!msg.includes("Bentuk"));
 });
 
@@ -68,7 +68,7 @@ test("empty optional fields are left out; link help replaces the link", () => {
   assert.ok(!msg.includes("Pembayaran:"));
   assert.ok(msg.includes("Link ulasan Google: belum ada, mohon dibantu"));
   assert.ok(msg.includes("Logo: tidak pakai logo"));
-  assert.ok(!buildOrderMessage({ ...order, unitPrice: null }, "id").includes("Subtotal"), "no price → no price lines");
+  assert.ok(!buildOrderMessage({ ...order, unitPrice: null }, "id").includes("Total:"), "no price → no price lines");
   assert.ok(!/\n{3,}/.test(msg), "no triple blank lines");
 });
 

@@ -49,7 +49,7 @@ export function buildOrderMessage(o: Order, lang: Lang): string {
     line(m.format, format?.name[lang] ?? o.format),
     line(m.qty, o.quantity),
     o.unitPrice === null ? null : line(m.price, `${formatIDR(o.unitPrice)} ${dictionary[lang].common.perPiece}`),
-    o.unitPrice === null ? null : line(m.subtotal, `${formatIDR(o.unitPrice * o.quantity)} (${m.noShipping})`),
+    o.unitPrice === null ? null : line(m.subtotal, `${formatIDR(o.unitPrice * o.quantity)} (${m.freeShipping})`),
     line(m.finish, finishById(o.finish)?.name[lang]),
     line(m.color, swatch ? `${o.color} (${swatch.name[lang]})` : o.color),
     line(m.name, o.name.trim()),

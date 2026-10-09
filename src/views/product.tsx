@@ -35,6 +35,9 @@ export function ProductView({ lang, format: slug }: { lang: Lang; format: string
       <p className="mt-3 text-lg text-ink-soft">{f.tagline[lang]}</p>
       <div className="mt-4 flex flex-wrap items-center gap-3">
         <p className="font-display text-3xl font-extrabold tracking-tight">{price}</p>
+        {f.price !== null && (
+          <p className="rounded-full bg-leaf px-3 py-1.5 font-mono text-xs uppercase tracking-wider text-paper">{d.common.freeShipping}</p>
+        )}
         {!f.available && (
           <p className="rounded-full bg-ink px-3 py-1.5 font-mono text-xs uppercase tracking-wider text-paper">{d.common.comingSoon}</p>
         )}

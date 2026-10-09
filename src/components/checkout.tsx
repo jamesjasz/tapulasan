@@ -644,10 +644,10 @@ function ReviewStep({
         {format.price !== null && (
           <>
             <Row k={t.review.price} v={`${formatIDR(format.price)} ${d.common.perPiece}`} />
+            <Row k={t.review.shipping} v={t.review.shippingValue} />
             <Row k={t.review.subtotal} v={formatIDR(format.price * s.quantity)} strong />
           </>
         )}
-        <Row k={t.review.shipping} v={t.review.shippingValue} />
         <p className="mt-6 text-center text-ink-soft">{t.review.thanks}</p>
       </article>
 
