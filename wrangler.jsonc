@@ -1,0 +1,12 @@
+// Cloudflare Workers static assets: upload the `next build` export in out/. No server code.
+// Without this file, `wrangler deploy` auto-converts the project to OpenNext (server rendering),
+// which fails for a static export.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "tapulasan",
+  "compatibility_date": "2026-10-06",
+  "assets": {
+    "directory": "./out",
+    "not_found_handling": "404-page"
+  }
+}
