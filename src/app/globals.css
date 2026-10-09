@@ -36,7 +36,7 @@
 
   --ease-out-soft: cubic-bezier(0.2, 0.8, 0.2, 1);
   --ease-ripple: cubic-bezier(0.16, 1, 0.3, 1);
-  --animate-ripple: ripple 2.4s var(--ease-ripple) infinite;
+  --animate-ripple: ripple 2.4s var(--ease-ripple) infinite backwards;
 
   @keyframes ripple {
     0% { transform: scale(0.35); opacity: 0.9; }
@@ -156,7 +156,8 @@ details[open] .faq-icon { transform: rotate(45deg); }
     animation-iteration-count: 1 !important;
     transition-duration: 150ms !important;
   }
-  .animate-ripple { animation: none !important; opacity: 0.35; }
+  /* Still rings instead of a pulse. */
+  .animate-ripple { animation: none !important; opacity: 0.5; scale: var(--s, 1); }
 }
 
 @layer components {
