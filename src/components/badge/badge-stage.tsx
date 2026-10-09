@@ -1,8 +1,8 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { RotateCw, Undo2, ZoomIn, ZoomOut } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { Box, RotateCw, Undo2, ZoomIn, ZoomOut } from "lucide-react";
 import { finishById, formatBySlug, swatches } from "@/content/products";
 import type { BadgeConfig } from "@/lib/badge-config";
 import { fill, getDict, type Lang } from "@/lib/i18n";
@@ -40,7 +40,8 @@ export function BadgeStage({
   const t = getDict(lang).product.viewer;
   const format = formatBySlug(config.format)!;
   const reduced = useReducedMotion();
-  const [mode, setMode] = useState<"pending" | "3d" | "2d">("pending");
+  // pending: before hydration · await: WebGL ok, 3D loads on first interaction · 3d · 2d (fallback)
+  const [mode, setMode] = useState<"pending" | "await" | "3d" | "2d">("pending");
   const [ready, setReady] = useState(false);
   const [active, setActive] = useState(true);
   const wrap = useRef<HTMLDivElement>(null);
@@ -51,8 +52,18 @@ export function BadgeStage({
     const forced = new URLSearchParams(location.search).get("no3d") === "1";
     // Browser-only checks: decided after hydration so the server HTML (poster) matches.
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    setMode(!forced && hasWebGL() ? "3d" : "2d");
+    setMode(!forced && hasWebGL() ? "await" : "2d");
   }, []);
+
+  // three.js is ~270 KB gz: fetch it on the first sign of intent (scroll, touch, pointer, key)
+  // so it never blocks the first render. The 2D face is the poster until then.
+  useEffect(() => {
+    if (mode !== "await") return;
+    const go = () => setMode("3d");
+    const events = ["pointerdown", "pointermove", "keydown", "touchstart", "wheel", "scroll"] as const;
+    events.forEach((e) => addEventListener(e, go, { once: true, passive: true }));
+    return () => events.forEach((e) => removeEventListener(e, go));
+  }, [mode]);
 
   // Pause rendering while the viewer is off-screen.
   useEffect(() => {
@@ -63,7 +74,7 @@ export function BadgeStage({
     return () => io.disconnect();
   }, []);
 
-  const onLost = useCallback(() => setMode("2d"), []);
+  const onLost = () => setMode("2d");
 
   const colorName = swatches.find((s) => s.hex === config.color)?.name[lang] ?? config.color;
   const label = fill(t.label, {
@@ -127,6 +138,15 @@ export function BadgeStage({
               onReady={() => setReady(true)}
             />
           </div>
+        )}
+        {mode === "await" && (
+          <button
+            type="button"
+            onClick={() => setMode("3d")}
+            className="absolute bottom-3 left-1/2 flex min-h-11 -translate-x-1/2 items-center gap-1.5 rounded-full bg-paper-raised/90 px-4 text-sm font-semibold shadow-[inset_0_0_0_1.5px_var(--color-line)]"
+          >
+            <Box aria-hidden="true" className="size-4" /> {t.view3d}
+          </button>
         )}
         {mode === "3d" && !ready && (
           <p className="eyebrow absolute inset-x-0 bottom-3 text-center text-ink-soft" aria-live="polite">

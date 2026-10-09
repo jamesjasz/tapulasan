@@ -119,7 +119,6 @@ export function LangToggle({ lang, onDark = false }: { lang: Lang; onDark?: bool
       href={target.path}
       hrefLang={target.lang}
       lang={target.lang}
-      aria-label={t.switchTo}
       // Keep the query string (customizer state) when switching language.
       onClick={(e) => {
         if (!window.location.search) return;
@@ -128,16 +127,18 @@ export function LangToggle({ lang, onDark = false }: { lang: Lang; onDark?: bool
       }}
       className={`flex min-h-11 items-center rounded-full px-1 font-mono text-[0.8125rem] font-semibold tracking-wider ${onDark ? "text-ink-on-dark" : "text-ink-soft"}`}
     >
-      <span aria-hidden="true" className="flex items-center rounded-full border border-current/40 p-0.5">
+      {/* Accessible name = visible "ID EN" + the action, so it matches what sighted users see. */}
+      <span className="flex items-center rounded-full border border-current/40 p-0.5">
         {(["id", "en"] as const).map((l) => (
           <span
             key={l}
             className={`rounded-full px-2 py-1 uppercase ${l === lang ? (onDark ? "bg-paper text-ink" : "bg-ink text-paper") : ""}`}
           >
-            {l}
+            {l}{" "}
           </span>
         ))}
       </span>
+      <span className="sr-only">{t.switchTo}</span>
     </Link>
   );
 }

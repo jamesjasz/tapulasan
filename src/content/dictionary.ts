@@ -46,7 +46,7 @@ const id = {
     sample: "CONTOH",
     customize: "Kustomisasi",
     planned: "Direncanakan",
-    learnMore: "Selengkapnya",
+    learnMore: "Lihat cara kerja lengkap",
   },
   home: {
     hero: {
@@ -234,6 +234,7 @@ const id = {
       zoomIn: "Perbesar",
       zoomOut: "Perkecil",
       loading: "Menyiapkan pratinjau 3D…",
+      view3d: "Lihat dalam 3D",
       fallback: "Pratinjau 2D. 3D tidak tersedia di perangkat ini.",
       dragHint: "Geser untuk memutar",
       controls: "Kontrol pratinjau",
@@ -543,7 +544,7 @@ const en: Dictionary = {
     sample: "SAMPLE",
     customize: "Customize",
     planned: "Planned",
-    learnMore: "Learn more",
+    learnMore: "See the full walkthrough",
   },
   home: {
     hero: {
@@ -731,6 +732,7 @@ const en: Dictionary = {
       zoomIn: "Zoom in",
       zoomOut: "Zoom out",
       loading: "Preparing 3D preview…",
+      view3d: "View in 3D",
       fallback: "2D preview. 3D isn't available on this device.",
       dragHint: "Drag to rotate",
       controls: "Preview controls",

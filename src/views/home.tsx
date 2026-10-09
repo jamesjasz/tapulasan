@@ -65,7 +65,7 @@ export function HomeView({ lang }: { lang: Lang }) {
               <ol className="mt-5 space-y-3">
                 {h.problem.oldSteps.map((s, i) => (
                   <li key={s} className="flex items-baseline gap-4 text-lg text-ink-on-dark">
-                    <span className="font-mono text-sm tabular-nums text-ink-on-dark/70">{String(i + 1).padStart(2, "0")}</span>
+                    <span className="font-mono text-sm tabular-nums text-ink-on-dark">{String(i + 1).padStart(2, "0")}</span>
                     {s}
                   </li>
                 ))}
@@ -115,7 +115,7 @@ export function HomeView({ lang }: { lang: Lang }) {
           </h2>
           <ol className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
             {h.how.steps.map((s, i) => (
-              <li key={s.title} className={s.planned ? "opacity-75" : ""}>
+              <li key={s.title}>
                 <div className="flex items-center gap-3">
                   <span
                     className={`grid size-11 place-items-center rounded-full font-mono font-semibold ${s.planned ? "border-2 border-dashed border-ink-soft text-ink-soft" : "bg-ink text-paper"}`}
