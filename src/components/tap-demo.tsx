@@ -89,7 +89,7 @@ export function TapDemo({ lang }: { lang: Lang }) {
         <button
           type="button"
           onClick={() => setRun((r) => r + 1)}
-          className="flex min-h-11 items-center gap-1.5 rounded-full px-3 font-semibold text-ink hover:bg-ink/5"
+          className="flex min-h-11 shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full px-3 font-semibold text-ink hover:bg-ink/5"
         >
           <RotateCcw aria-hidden="true" className="size-4" /> {t.replay}
         </button>
