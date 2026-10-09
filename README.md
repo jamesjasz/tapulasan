@@ -24,15 +24,23 @@ npx serve out      # preview the export locally
 
 Debug flag: add `?no3d=1` to a product URL to force the 2D fallback viewer.
 
-## Deploy (Cloudflare Pages)
+## Deploy (Cloudflare)
+
+The site is a static export: `npm run build` writes everything to `out/`. `wrangler.jsonc` tells Cloudflare to upload that folder as static assets (no server code).
+
+**Workers (Workers Builds, connected to Git):**
 
 | Setting | Value |
 |---|---|
 | Build command | `npm run build` |
-| Build output directory | `out` |
+| Deploy command | `npx wrangler deploy` |
 | Environment variable | `NODE_VERSION=26` |
 
-Cloudflare serves `out/404.html` for unknown URLs automatically.
+Keep `wrangler.jsonc` in the repo. Without it, `wrangler deploy` tries to convert the project to OpenNext (server rendering) and fails on a static export.
+
+**Pages (alternative):** build command `npm run build`, output directory `out`, `NODE_VERSION=26`, no deploy command.
+
+Unknown URLs get `out/404.html`; `/shop` redirects to `/shop/`.
 
 ## Where to edit things
 
