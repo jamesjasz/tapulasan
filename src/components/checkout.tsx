@@ -9,6 +9,7 @@ import { configFromParams, configToParams, defaultConfig, type BadgeConfig } fro
 import { fill, getDict, localePath, type Lang } from "@/lib/i18n";
 import { mailLink, waLink } from "@/lib/links";
 import { buildOrderMessage, emailSubject, orderRef, type Order, type PaymentId } from "@/lib/order-message";
+import { formatIDR } from "@/lib/price";
 import { checkReviewLink } from "@/lib/review-link";
 import { loadJson, loadLogo, removeKey, saveJson } from "@/lib/session";
 import { FaceCanvas } from "./badge/face-canvas";
@@ -169,6 +170,7 @@ export function Checkout({ lang }: { lang: Lang }) {
       ref: s.ref,
       format: s.config.format,
       quantity: s.quantity,
+      unitPrice: formatBySlug(s.config.format)?.price ?? null,
       finish: s.config.finish,
       color: s.config.color,
       name: s.config.name,
@@ -283,6 +285,12 @@ export function Checkout({ lang }: { lang: Lang }) {
                 <p id="qty-error" className="error">
                   {errors.quantity}
                 </p>
+                {format.price !== null && (
+                  <p className="mt-3 text-lg">
+                    {formatIDR(format.price)} {d.common.perPiece} · {t.badge.subtotal}{" "}
+                    <strong>{formatIDR(format.price * s.quantity)}</strong>
+                  </p>
+                )}
                 <p id="qty-note" className="hint">
                   {t.badge.priceNote}
                 </p>
@@ -633,7 +641,13 @@ function ReviewStep({
         {c.notes.trim() && <Row k={t.contact.notes} v={c.notes} />}
         <Row k={t.review.payment} v={s.payment ? t.payment.options[s.payment].title : ""} />
         <Dashed />
-        <Row k={t.review.price} v={d.common.priceConfirmed} strong />
+        {format.price !== null && (
+          <>
+            <Row k={t.review.price} v={`${formatIDR(format.price)} ${d.common.perPiece}`} />
+            <Row k={t.review.shipping} v={t.review.shippingValue} />
+            <Row k={t.review.subtotal} v={formatIDR(format.price * s.quantity)} strong />
+          </>
+        )}
         <p className="mt-6 text-center text-ink-soft">{t.review.thanks}</p>
       </article>
 

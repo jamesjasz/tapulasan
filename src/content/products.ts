@@ -11,7 +11,7 @@ export type Format = {
   tagline: Bilingual;
   /** Can be ordered now. false = "coming soon": still designable, but no checkout. */
   available: boolean;
-  price: number | null; // DECIDE: price in IDR; null shows "price coming soon"
+  price: number | null; // per piece, IDR; null shows "price coming soon"
   /** Face size in mm (DECIDE: placeholder dimensions). */
   size: { w: number; h: number; d: number };
   radius: number;
@@ -44,7 +44,7 @@ export const formats: Format[] = [
       id: "Berdiri di meja kasir, tepat saat pelanggan membayar.",
       en: "Stands by the till, right when customers pay.",
     },
-    price: null,
+    price: 50000,
     size: { w: 148, h: 105, d: 5 }, // DECIDE: A6 landscape placeholder
     radius: 8,
     layout: "landscape",
@@ -61,7 +61,7 @@ export const formats: Format[] = [
       id: "Di setiap meja, di samping menu dan tisu.",
       en: "On every table, next to the menu and napkins.",
     },
-    price: null,
+    price: 50000,
     size: { w: 100, h: 150, d: 3 }, // DECIDE
     radius: 6,
     layout: "portrait",
@@ -78,7 +78,7 @@ export const formats: Format[] = [
       id: "Dikalungkan staf. Ulasan ikut ke mana pun mereka melayani.",
       en: "Worn by staff. The review link goes wherever they serve.",
     },
-    price: null,
+    price: 50000,
     size: { w: 54, h: 85.6, d: 0.8 }, // CR80, worn vertically
     radius: 3.2,
     layout: "portrait",
@@ -96,7 +96,7 @@ export const formats: Format[] = [
       id: "Kecil, ikut di kunci toko atau kunci motor kurir.",
       en: "Small enough for the shop keys or a courier's bike keys.",
     },
-    price: null,
+    price: 50000,
     size: { w: 40, h: 60, d: 3 }, // DECIDE
     radius: 8,
     layout: "portrait",

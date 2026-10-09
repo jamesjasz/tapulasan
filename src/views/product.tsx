@@ -6,6 +6,7 @@ import { Text } from "@/components/placeholder-text";
 import { formatBySlug, formats, type FormatSlug } from "@/content/products";
 import { fill, getDict, localePath, type Lang } from "@/lib/i18n";
 import { pageMeta } from "@/lib/metadata";
+import { formatIDR } from "@/lib/price";
 
 export const productParams = () => formats.map((f) => ({ format: f.slug }));
 
@@ -21,6 +22,7 @@ export function ProductView({ lang, format: slug }: { lang: Lang; format: string
   const t = d.product;
   const f = formatBySlug(slug)!;
 
+  const price = f.price === null ? d.common.priceSoon : `${formatIDR(f.price)} ${d.common.perPiece}`;
   const header = (
     <div>
       <Link href={localePath(lang, "/shop/")} className="-ml-2 inline-flex min-h-11 items-center gap-1.5 rounded-full px-2 text-sm font-semibold text-ink-soft hover:text-ink">
@@ -31,9 +33,15 @@ export function ProductView({ lang, format: slug }: { lang: Lang; format: string
         {f.name[lang]}
       </h1>
       <p className="mt-3 text-lg text-ink-soft">{f.tagline[lang]}</p>
-      <p className="mt-4 inline-flex items-center gap-2 rounded-full bg-ink px-3 py-1.5 font-mono text-xs uppercase tracking-wider text-paper">
-        {!f.available ? d.common.comingSoon : f.price === null ? d.common.priceSoon : f.price}
-      </p>
+      <div className="mt-4 flex flex-wrap items-center gap-3">
+        <p className="font-display text-3xl font-extrabold tracking-tight">{price}</p>
+        {f.price !== null && (
+          <p className="rounded-full bg-leaf px-3 py-1.5 font-mono text-xs uppercase tracking-wider text-paper">{d.common.freeShipping}</p>
+        )}
+        {!f.available && (
+          <p className="rounded-full bg-ink px-3 py-1.5 font-mono text-xs uppercase tracking-wider text-paper">{d.common.comingSoon}</p>
+        )}
+      </div>
     </div>
   );
 
@@ -42,7 +50,7 @@ export function ProductView({ lang, format: slug }: { lang: Lang; format: string
     [t.specs.material, f.specs.material],
     [t.specs.chip, f.specs.chip],
     [t.specs.compat, t.specs.compatValue],
-    [t.specs.price, f.price === null ? d.common.priceSoon : String(f.price)],
+    [t.specs.price, price],
   ];
 
   return (

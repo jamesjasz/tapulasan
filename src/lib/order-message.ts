@@ -2,6 +2,7 @@
 
 import { dictionary } from "../content/dictionary.ts";
 import { finishById, formatBySlug, swatches, type FinishId, type FormatSlug } from "../content/products.ts";
+import { formatIDR } from "./price.ts";
 
 export type Lang = "id" | "en";
 export type PaymentId = "qris" | "transfer" | "ewallet";
@@ -10,6 +11,8 @@ export type Order = {
   ref: string;
   format: FormatSlug;
   quantity: number;
+  /** Per-piece price in IDR; null leaves the price lines out. */
+  unitPrice: number | null;
   finish: FinishId;
   color: string;
   name: string;
@@ -45,6 +48,8 @@ export function buildOrderMessage(o: Order, lang: Lang): string {
     line(m.ref, o.ref),
     line(m.format, format?.name[lang] ?? o.format),
     line(m.qty, o.quantity),
+    o.unitPrice === null ? null : line(m.price, `${formatIDR(o.unitPrice)} ${dictionary[lang].common.perPiece}`),
+    o.unitPrice === null ? null : line(m.subtotal, `${formatIDR(o.unitPrice * o.quantity)} (${m.freeShipping})`),
     line(m.finish, finishById(o.finish)?.name[lang]),
     line(m.color, swatch ? `${o.color} (${swatch.name[lang]})` : o.color),
     line(m.name, o.name.trim()),

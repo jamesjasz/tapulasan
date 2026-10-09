@@ -3,6 +3,7 @@ import { ArrowRight } from "lucide-react";
 import type { Format, FormatSlug } from "@/content/products";
 import { defaultConfig, type BadgeConfig } from "@/lib/badge-config";
 import { getDict, localePath, type Lang } from "@/lib/i18n";
+import { formatIDR } from "@/lib/price";
 import { BadgeFace } from "./badge/face-canvas";
 
 // Each card shows a different colour/finish, to hint at the range. Stable objects: the renderer redraws on identity change.
@@ -34,6 +35,9 @@ export function FormatCard({ format, lang, headingLevel = 3 }: { format: Format;
         >
           <BadgeFace slug={format.slug} lang={lang} longSide={560} config={showcaseConfig(lang, format.slug)} />
         </div>
+        {!format.available && (
+          <span className="eyebrow absolute left-3 top-3 rounded-full bg-ink px-2.5 py-1 text-paper">{d.common.comingSoon}</span>
+        )}
       </div>
       <div className="flex flex-1 flex-col px-2 pb-2 pt-4">
         <H className="font-display text-2xl font-extrabold tracking-tight">
@@ -43,10 +47,12 @@ export function FormatCard({ format, lang, headingLevel = 3 }: { format: Format;
         </H>
         <p className="mt-1.5 text-[0.9375rem] text-ink-soft">{format.tagline[lang]}</p>
         <div className="mt-auto flex items-center justify-between gap-3 pt-4">
-          {format.available ? (
-            <span className="eyebrow text-ink-soft">{format.price === null ? d.common.priceShort : format.price}</span>
+          {format.price === null ? (
+            <span className="eyebrow text-ink-soft">{d.common.priceShort}</span>
           ) : (
-            <span className="eyebrow rounded-full border border-dashed border-ink-soft px-2.5 py-1 text-ink-soft">{d.common.comingSoon}</span>
+            <span className="text-lg font-bold">
+              {formatIDR(format.price)} <span className="text-sm font-medium text-ink-soft">{d.common.perPiece}</span>
+            </span>
           )}
           <span aria-hidden="true" className="inline-flex items-center gap-1 text-sm font-bold text-tap-deep">
             {d.common.customize} <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
