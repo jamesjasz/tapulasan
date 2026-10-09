@@ -23,6 +23,8 @@ export type Format = {
   hole?: { kind: "slot" | "round"; top: number; w: number; h: number };
   /** What holds it up in the 3D scene. */
   mount: "easel" | "base" | "lanyard" | "ring";
+  /** Real product photo, e.g. "/mockups/table-stand.webp". DECIDE: null shows a "photo coming soon" slot. */
+  photo: string | null;
   specs: { material: string; chip: string; dimensions: string };
 };
 
@@ -45,7 +47,8 @@ export const formats: Format[] = [
     layout: "landscape",
     nfc: { x: 0.2, y: 0.73, r: 0.13 },
     mount: "easel",
-    specs: { ...specsTodo, dimensions: "[[PLACEHOLDER: ~148 × 105 mm (A6)]]" },
+    photo: null,
+    specs: { ...specsTodo, dimensions: "~148 × 105 mm (A6) [[PLACEHOLDER: confirm final size]]" },
   },
   {
     slug: "table-stand",
@@ -60,7 +63,8 @@ export const formats: Format[] = [
     layout: "portrait",
     nfc: { x: 0.5, y: 0.885, r: 0.11 },
     mount: "base",
-    specs: { ...specsTodo, dimensions: "[[PLACEHOLDER: ~100 × 150 mm]]" },
+    photo: null,
+    specs: { ...specsTodo, dimensions: "~100 × 150 mm [[PLACEHOLDER: confirm final size]]" },
   },
   {
     slug: "lanyard-card",
@@ -76,6 +80,7 @@ export const formats: Format[] = [
     nfc: { x: 0.5, y: 0.885, r: 0.13 },
     hole: { kind: "slot", top: 5, w: 13, h: 3 },
     mount: "lanyard",
+    photo: null,
     specs: { ...specsTodo, dimensions: "85.6 × 54 mm (CR80) [[PLACEHOLDER: confirm thickness]]" },
   },
   {
@@ -93,7 +98,8 @@ export const formats: Format[] = [
     nfc: { x: 0.5, y: 0.88, r: 0.15 },
     hole: { kind: "round", top: 6, w: 6, h: 6 },
     mount: "ring",
-    specs: { ...specsTodo, dimensions: "[[PLACEHOLDER: ~40 × 60 mm]]" },
+    photo: null,
+    specs: { ...specsTodo, dimensions: "~40 × 60 mm [[PLACEHOLDER: confirm final size]]" },
   },
 ];
 

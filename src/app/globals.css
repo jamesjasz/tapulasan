@@ -59,7 +59,6 @@ body {
 :focus-visible {
   outline: 3px solid var(--color-tap-deep);
   outline-offset: 3px;
-  border-radius: 4px;
 }
 .bg-ink :focus-visible {
   outline-color: var(--color-tap);
@@ -70,6 +69,7 @@ body {
   color: var(--color-ink);
 }
 
+@layer components {
 /* Mono labels: the "label maker" voice. */
 .eyebrow {
   font-family: var(--font-mono);
@@ -147,6 +147,7 @@ body {
 details > summary { list-style: none; cursor: pointer; }
 details > summary::-webkit-details-marker { display: none; }
 details[open] .faq-icon { transform: rotate(45deg); }
+}
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
@@ -156,4 +157,16 @@ details[open] .faq-icon { transform: rotate(45deg); }
     transition-duration: 150ms !important;
   }
   .animate-ripple { animation: none !important; opacity: 0.35; }
+}
+
+@layer components {
+/* Product stage: a lit tabletop for the badge */
+.stage {
+  background:
+    radial-gradient(120% 70% at 50% 35%, #fffdf8 0%, transparent 60%),
+    linear-gradient(180deg, var(--color-paper-sunk) 0%, #e4d9c6 100%);
+}
+.viewer canvas {
+  touch-action: pan-y !important; /* horizontal drag rotates, vertical swipe scrolls the page */
+}
 }
