@@ -13,6 +13,7 @@ export function Footer({ lang }: { lang: Lang }) {
     { href: "/shop/", label: d.nav.shop },
     { href: "/how-it-works/", label: d.nav.how },
     { href: "/contact/", label: d.nav.contact },
+    { href: "/about/", label: d.nav.about },
   ];
   return (
     <footer className="bg-ink text-paper">

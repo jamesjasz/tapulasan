@@ -12,6 +12,11 @@ const orgJsonLd = {
   url: site.url,
   email: site.email,
   logo: `${site.url}/icon.svg`,
+  foundingDate: site.foundingDate,
+  founder: { "@type": "Person", name: site.founder },
+  address: { "@type": "PostalAddress", addressCountry: "ID" },
+  areaServed: "ID",
+  contactPoint: { "@type": "ContactPoint", contactType: "customer service", email: site.email, telephone: `+${site.whatsapp}` },
 };
 
 /** The <html> shell shared by the two root layouts (id at "/", en at "/en"). */
