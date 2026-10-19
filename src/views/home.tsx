@@ -158,7 +158,7 @@ export function HomeView({ lang }: { lang: Lang }) {
         <SiteMock lang={lang} />
       </section>
 
-      {/* 6 · AI review assistant — coming soon */}
+      {/* 6 · AI design studio — coming soon */}
       <section aria-labelledby="ai-title" className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="relative overflow-hidden rounded-stage bg-ink p-6 text-paper sm:p-10 lg:p-14">
           <Ripple className="absolute -bottom-40 -right-40 size-[28rem] opacity-20" rings={5} color="var(--color-tap)" />

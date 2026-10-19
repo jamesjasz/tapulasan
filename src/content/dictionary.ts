@@ -23,12 +23,17 @@ const id = {
       description: "Tap atau scan, langsung ke halaman ulasan Google yang asli. Tanpa aplikasi, tanpa penyaringan ulasan.",
     },
     contact: { title: "Kontak", description: "Hubungi TapUlasan lewat WhatsApp atau email." },
+    about: {
+      title: "Tentang kami",
+      description: "TapUlasan dibangun sejak Oktober 2024: badge NFC + QR untuk ulasan Google dan website sederhana untuk UMKM.",
+    },
   },
   nav: {
     home: "Beranda",
     shop: "Toko",
     how: "Cara Kerja",
     contact: "Kontak",
+    about: "Tentang",
     cta: "Desain badge",
     menu: "Menu",
     close: "Tutup menu",
@@ -113,7 +118,7 @@ const id = {
         },
         {
           title: "Pantau dari dasbor",
-          text: "Jumlah tap, ringkasan ulasan, dan draf balasan untuk Anda setujui.",
+          text: "Jumlah tap per badge, supaya Anda tahu badge mana yang paling sering dipakai.",
           planned: true,
         },
       ],
@@ -142,23 +147,23 @@ const id = {
     },
     ai: {
       tag: "Segera hadir",
-      title: "Asisten ulasan AI",
-      sub: "Dibangun dengan Claude. Membantu Anda mengurus ulasan tanpa menyita waktu.",
+      title: "Studio desain AI",
+      sub: "Dibangun dengan Claude. Ceritakan usaha Anda, lalu pilih desain badge dan website yang paling cocok.",
       features: [
         {
-          title: "Draf balasan",
-          text: "AI menyiapkan draf balasan untuk setiap ulasan. Anda baca, ubah kalau perlu, lalu setujui.",
+          title: "Pilihan desain badge",
+          text: "Dari nama, logo, dan warna usaha Anda, AI menyiapkan beberapa desain badge untuk dipilih.",
         },
         {
-          title: "Ringkasan tema",
-          text: "Apa yang paling sering dipuji dan apa yang sering dikeluhkan, dalam beberapa kalimat.",
+          title: "Website siap pakai",
+          text: "Menu, jam buka, lokasi, dan tombol ulasan disusun jadi website yang enak dibuka di HP.",
         },
         {
-          title: "Peringatan ulasan negatif",
-          text: "Kabar cepat saat ada ulasan buruk, supaya Anda bisa segera merespons.",
+          title: "Ubah sampai pas",
+          text: "Minta ganti warna, kata-kata, atau tata letak. Revisi cepat, tanpa ribet.",
         },
       ],
-      approve: "Tidak ada yang diposting tanpa persetujuan Anda.",
+      approve: "Tidak ada yang dicetak atau ditayangkan sebelum Anda setujui.",
     },
     principles: {
       eyebrow: "Prinsip kami",
@@ -170,11 +175,11 @@ const id = {
         },
         {
           title: "Tidak ada ulasan palsu",
-          text: "Kami tidak membuat, menjual, atau membeli ulasan. AI hanya membantu menyusun balasan.",
+          text: "Kami tidak membuat, menjual, atau membeli ulasan. AI hanya membantu mendesain badge dan website.",
         },
         {
           title: "Anda tetap pegang kendali",
-          text: "Balasan baru diposting setelah Anda setujui. Link ulasan tetap milik bisnis Anda.",
+          text: "Desain baru dicetak setelah Anda setujui. Link ulasan tetap milik bisnis Anda.",
         },
       ],
     },
@@ -505,6 +510,27 @@ const id = {
       required: "Tulis pesannya dulu.",
     },
   },
+  about: {
+    eyebrow: "Tentang kami",
+    title: "Kami bantu UMKM lebih mudah dapat ulasan.",
+    sub: "TapUlasan berdiri sejak Oktober 2024 untuk kafe, salon, klinik, bengkel, dan usaha lokal lain yang hidup dari ulasan Google Maps. Awalnya kami membuat dan mengantar badge langsung ke pelanggan. Toko online ini hadir di Oktober 2026.",
+    whatTitle: "Apa yang kami buat",
+    what: [
+      {
+        title: "Badge ulasan NFC + QR",
+        text: "Plakat untuk meja kasir. Pelanggan tempelkan HP atau scan kodenya, halaman ulasan Google bisnis Anda langsung terbuka.",
+      },
+      {
+        title: "Website untuk usaha Anda",
+        text: "Website sederhana yang enak dibuka di HP: menu atau layanan, jam buka, lokasi, kontak, dan tombol “Tinggalkan ulasan”.",
+      },
+    ],
+    principle: "Setiap pelanggan dikirim ke halaman ulasan Google yang asli. Tanpa penyaringan, tanpa ulasan palsu.",
+    factsTitle: "Data perusahaan",
+    facts: { founded: "Didirikan", founder: "Pendiri", base: "Berbasis di", email: "Email", site: "Situs" },
+    foundedValue: "Oktober 2024",
+    baseValue: "Indonesia",
+  },
 };
 
 export type Dictionary = typeof id;
@@ -531,12 +557,17 @@ const en: Dictionary = {
       description: "Tap or scan, straight to the real Google review page. No app, no review gating.",
     },
     contact: { title: "Contact", description: "Reach TapUlasan on WhatsApp or by email." },
+    about: {
+      title: "About us",
+      description: "TapUlasan started in October 2024: NFC + QR badges for Google reviews and simple websites for small businesses.",
+    },
   },
   nav: {
     home: "Home",
     shop: "Shop",
     how: "How it works",
     contact: "Contact",
+    about: "About",
     cta: "Design a badge",
     menu: "Menu",
     close: "Close menu",
@@ -621,7 +652,7 @@ const en: Dictionary = {
         },
         {
           title: "Track it in a dashboard",
-          text: "Tap counts, review insights and suggested replies for you to approve.",
+          text: "Tap counts per badge, so you can see which one gets used most.",
           planned: true,
         },
       ],
@@ -650,23 +681,23 @@ const en: Dictionary = {
     },
     ai: {
       tag: "Coming soon",
-      title: "AI review assistant",
-      sub: "Built with Claude. Helps you keep up with reviews without eating your day.",
+      title: "AI design studio",
+      sub: "Built with Claude. Tell us about your business, then pick the badge and website design that fits.",
       features: [
         {
-          title: "Draft replies",
-          text: "The AI drafts a reply to each review. You read it, edit if needed, then approve.",
+          title: "Badge design options",
+          text: "From your business name, logo and colors, the AI prepares a few badge designs to choose from.",
         },
         {
-          title: "Theme summaries",
-          text: "What people praise most and what they complain about, in a few sentences.",
+          title: "A ready-to-use website",
+          text: "Your menu, hours, location and review button, laid out as a site that works well on phones.",
         },
         {
-          title: "Negative review alerts",
-          text: "A quick heads-up when a bad review lands, so you can respond fast.",
+          title: "Tweak until it's right",
+          text: "Ask for different colors, wording or layout. Quick changes, no hassle.",
         },
       ],
-      approve: "Nothing is posted without your approval.",
+      approve: "Nothing is printed or published until you approve it.",
     },
     principles: {
       eyebrow: "Our principles",
@@ -678,11 +709,11 @@ const en: Dictionary = {
         },
         {
           title: "No fake reviews",
-          text: "We don't write, sell or buy reviews. The AI only helps draft your replies.",
+          text: "We don't write, sell or buy reviews. The AI only helps design badges and websites.",
         },
         {
           title: "You stay in control",
-          text: "Replies are posted only after you approve them. The review link belongs to your business.",
+          text: "Designs are printed only after you approve them. The review link belongs to your business.",
         },
       ],
     },
@@ -1012,6 +1043,27 @@ const en: Dictionary = {
       note: "This message isn't stored anywhere. These buttons just open WhatsApp or your email app.",
       required: "Write your message first.",
     },
+  },
+  about: {
+    eyebrow: "About us",
+    title: "We make it easy for small businesses to get reviews.",
+    sub: "We started TapUlasan in October 2024 for cafés, salons, clinics, workshops and other local businesses that live on Google Maps reviews. At first we made badges and delivered them to customers in person. This online store opened in October 2026.",
+    whatTitle: "What we make",
+    what: [
+      {
+        title: "NFC + QR review badges",
+        text: "A plate for the counter. Customers tap their phone or scan the code and your Google review page opens straight away.",
+      },
+      {
+        title: "A website for your business",
+        text: "A simple site that works well on phones: menu or services, opening hours, location, contact and a “Leave a review” button.",
+      },
+    ],
+    principle: "Every customer goes to the real Google review page. No filtering, no fake reviews.",
+    factsTitle: "Company details",
+    facts: { founded: "Founded", founder: "Founder", base: "Based in", email: "Email", site: "Website" },
+    foundedValue: "October 2024",
+    baseValue: "Indonesia",
   },
 };
 
